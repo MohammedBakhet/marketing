@@ -1,132 +1,99 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Sparkles } from 'lucide-react';
-import { FaInstagram, FaVideo, FaChartLine, FaUsers, FaCalendarAlt, FaLayerGroup } from 'react-icons/fa';
+import Image from 'next/image';
 
 const services = [
   {
-    icon: FaInstagram,
-    title: 'SOCIALA MEDIER',
+    title: 'Sociala Medier',
     description:
-      'Vi hanterar dina sociala medier från A till Ö - från publicering och aktivt community management till analys och datadriven uppföljning.',
+      'Vi hanterar dina sociala medier från A till Ö - från publicering och aktivt community management till analys och datadriven uppföljning. Allt vi gör mäts, optimeras och anpassas för att säkerställa att innehållet når rätt publik och skapar långsiktig, mätbar effekt.',
+    image: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=800&h=600&fit=crop',
   },
   {
-    icon: FaVideo,
-    title: 'CONTENT',
+    title: 'Content',
     description:
-      'Vi skapar content som känns rätt i tiden. Vi fångar trender i rätt ögonblick och producerar innehåll som engagerar och sprids.',
+      'Vi skapar content som känns rätt i tiden. Vi tar idéer från första tanke till färdig produktion. Vi fångar trender i rätt ögonblick, sätter nya trender och producerar innehåll som engagerar, sprids och ger räckvidd. Trenddrivet när det behövs, varumärkesbyggande när det räknas. Alltid med plattform, målgrupp och effekt i fokus.',
+    image: 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=800&h=600&fit=crop',
   },
   {
-    icon: FaChartLine,
-    title: 'MARKNADSPLANER & STRATEGI',
+    title: 'Marknadsplaner & Strategi',
     description:
-      'Vi tar fram skräddarsydda marknadsplaner med helhetstänk. Utifrån ditt bolags affär, målgrupp och vision skapar vi tydlig riktning.',
+      'Vi tar fram skräddarsydda marknadsplaner med helhetstänk. Utifrån ditt bolags affär, målgrupp och vision skapar vi tydlig riktning - från övergripande kommunikation till detaljerade upplägg för varje kanal. Resultatet är marknadsföring som engagerar, bygger relationer och ger långsiktig effekt.',
+    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop',
   },
   {
-    icon: FaUsers,
-    title: 'INFLUENCER MARKETING',
+    title: 'Influencer Marketing',
     description:
-      'Vi arbetar med influencer marketing via vårt handplockade nätverk med över 300 kreatörer – från Stockholms största profiler till lovande nya stjärnskott.',
+      'Vi arbetar med influencer marketing via vårt handplockade nätverk med över 300 kreatörer – från Stockholms största profiler till lovande nya stjärnskott. Det gör att vi alltid kan matcha rätt röst med rätt varumärke. Influencers når publiken där den faktiskt är, med innehåll som känns äkta och relevant. Rätt samarbeten skapar engagemang, stärker varumärket och driver mätbara resultat – både räckvidd och konverteringar.',
+    image: 'https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&h=600&fit=crop',
   },
   {
-    icon: FaCalendarAlt,
-    title: 'EVENT & PR',
+    title: 'Event & PR',
     description:
-      'Vi skapar event och PR som verkligen sticker ut – från koncept och produktion till genomförande och uppföljning.',
+      'Vi skapar event och PR som verkligen sticker ut – från koncept och produktion till genomförande och uppföljning. Med vår erfarenhet kombinerar vi kreativa event, relevant PR och influencer-samarbeten för maximal synlighet och engagemang. Rätt event och PR bygger relationer, skapar buzz och stärker varumärket på ett sätt traditionell marknadsföring inte kan. Genom att kombinera influencers, content och kontakt med rätt personer når vi publiken där den faktiskt är – och skapar mätbar effekt.',
+    image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&h=600&fit=crop',
   },
   {
-    icon: FaLayerGroup,
-    title: 'HELHETSLÖSNING',
+    title: 'Helhetslösning',
     description:
-      'Vi skräddarsyr alla våra upplägg utifrån varje kunds behov, vision och mål. Från strategiska nedslag till helhetslösningar.',
+      'Vi skräddarsyr alla våra upplägg utifrån varje kunds behov, vision och mål. Från strategiska nedslag till helhetslösningar med marknadsplanering, innehållsskapande och distribution – allt anpassat för att skapa maximal effekt för just ert bolag.',
+    image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&h=600&fit=crop',
   },
 ];
 
 export default function Services() {
   return (
-    <section id="tjanster" className="min-h-screen flex items-center justify-center py-24 relative overflow-hidden" style={{ backgroundColor: '#0a0a0a' }}>
-      {/* Background decoration */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/2 left-0 w-[600px] h-[600px] rounded-full blur-[200px]" style={{ backgroundColor: 'rgba(212, 175, 55, 0.03)' }} />
-        <div className="absolute bottom-0 right-0 w-[500px] h-[500px] rounded-full blur-[180px]" style={{ backgroundColor: 'rgba(212, 175, 55, 0.03)' }} />
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <section id="tjanster" className="pt-24 pb-20 md:pt-40 md:pb-32 relative overflow-hidden w-full">
+      {/* Gradient background från mörk till ljus */}
+      <div className="absolute inset-0 -top-1 bg-gradient-to-b from-[#0a0a0a] via-[#2a2a2a] via-40% to-white" />
+      
+      <div className="w-full container-padding relative z-10">
+        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16 flex flex-col items-center"
+          className="text-center mb-20 md:mb-28"
         >
-          <motion.span
-            className="text-sm font-semibold uppercase tracking-widest mb-4 inline-flex items-center justify-center gap-2"
-            style={{ color: '#D4AF37' }}
-          >
-            <Sparkles size={16} />
-            Våra Tjänster
-            <Sparkles size={16} />
-          </motion.span>
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white text-center">
-            Allt du behöver för att{' '}
-            <span className="bg-gradient-to-r from-[#D4AF37] to-[#F0C350] bg-clip-text text-transparent">
-              växa
-            </span>
-          </h2>
-          <p className="text-lg text-gray-400 max-w-2xl text-center">
+          <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">Tjänster</h2>
+          <p className="text-lg md:text-xl text-white/80">
             Vi levererar helhetslösningar som driver resultat
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Services Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
           {services.map((service, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="group relative p-8 rounded-2xl transition-all duration-500"
-              style={{
-                backgroundColor: 'rgba(255, 255, 255, 0.02)',
-                border: '1px solid rgba(255, 255, 255, 0.06)'
-              }}
-              whileHover={{
-                backgroundColor: 'rgba(255, 255, 255, 0.04)',
-                borderColor: 'rgba(212, 175, 55, 0.3)',
-                y: -5,
-              }}
+              viewport={{ once: true, margin: '-100px' }}
+              transition={{ duration: 0.6, delay: index * 0.1 }}
+              className="group"
             >
-              {/* Hover glow effect */}
-              <div
-                className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                style={{
-                  background: 'radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.1), transparent 70%)'
-                }}
-              />
+              {/* Image */}
+              <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden mb-6 bg-surface">
+                <img
+                  src={service.image}
+                  alt={service.title}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              </div>
 
-              {/* Icon */}
-              <motion.div
-                className="w-14 h-14 rounded-xl flex items-center justify-center mb-6 relative"
-                style={{
-                  backgroundColor: 'rgba(212, 175, 55, 0.1)',
-                  border: '1px solid rgba(212, 175, 55, 0.2)'
-                }}
-                whileHover={{ scale: 1.05 }}
-              >
-                <service.icon className="text-2xl" style={{ color: '#D4AF37' }} />
-              </motion.div>
-
-              {/* Title */}
-              <h3 className="text-lg font-bold mb-3 text-white group-hover:text-white transition-colors">
-                {service.title}
-              </h3>
-
-              {/* Description */}
-              <p className="text-gray-500 leading-relaxed text-sm group-hover:text-gray-400 transition-colors">
-                {service.description}
-              </p>
+              {/* Content */}
+              <div>
+                <h3 className="heading-3 text-xl md:text-2xl mb-4">
+                  {service.title}
+                </h3>
+                <p className="text-secondary leading-relaxed">
+                  {service.description}
+                </p>
+              </div>
             </motion.div>
           ))}
         </div>

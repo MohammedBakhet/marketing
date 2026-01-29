@@ -7,12 +7,26 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState('');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
+      // Ändra stil när man scrollat förbi videon
+      setScrolled(window.scrollY > 600);
+      
+      const sections = ['kunder', 'tjanster', 'om-oss', 'kontakt'];
+      const current = sections.find(section => {
+        const element = document.getElementById(section);
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          return rect.top <= 100 && rect.bottom >= 100;
+        }
+        return false;
+      });
+      setActiveSection(current || '');
     };
+
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -20,112 +34,150 @@ export default function Header() {
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      const offset = 80;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - offset;
+      
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
     }
     setIsMobileMenuOpen(false);
   };
 
   const navLinks = [
-    { href: '/om-oss', label: 'Om Oss', isLink: true },
-    { href: 'tjanster', label: 'Tjänster', isLink: false },
+    { id: 'kunder', label: 'Kunder' },
+    { id: 'tjanster', label: 'Tjänster' },
+    { id: 'om-oss', label: 'Om Oss' },
+    { id: 'kontakt', label: 'Kontakt' },
   ];
 
   return (
     <motion.header
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.5 }}
+      initial={{ y: -100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled
-          ? 'py-4'
-          : 'py-6'
+        scrolled ? 'py-4 lg:py-5' : 'py-6 lg:py-8'
       }`}
       style={{
-        backgroundColor: scrolled ? 'rgba(10, 10, 10, 0.8)' : 'transparent',
-        backdropFilter: scrolled ? 'blur(20px)' : 'none',
-        borderBottom: scrolled ? '1px solid rgba(255, 255, 255, 0.05)' : 'none'
+        backgroundColor: scrolled 
+          ? 'rgba(248, 248, 248, 0.95)' 
+          : 'rgba(0, 0, 0, 0.15)',
+        backdropFilter: scrolled ? 'blur(12px)' : 'blur(8px)',
+        WebkitBackdropFilter: scrolled ? 'blur(12px)' : 'blur(8px)',
+        boxShadow: scrolled 
+          ? '0 2px 12px rgba(0, 0, 0, 0.08)' 
+          : 'none',
       }}
     >
-      <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-20">
-        <nav className="flex items-center justify-between">
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
+        <nav className="flex items-center h-[60px] lg:h-[68px]">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-3 group">
+          <Link href="/" className="flex-shrink-0 relative z-10">
             <motion.div
-              className="w-12 h-12 rounded-full flex items-center justify-center relative overflow-hidden"
-              style={{ backgroundColor: '#D4AF37' }}
-              whileHover={{ scale: 1.05 }}
+              className="flex items-center gap-2.5 select-none"
+              whileHover={{ opacity: 0.8 }}
               transition={{ duration: 0.2 }}
             >
-              <span className="text-white font-bold text-xl relative z-10">LV</span>
-              <motion.div
-                className="absolute inset-0"
-                style={{ backgroundColor: '#F0C350' }}
-                initial={{ scale: 0 }}
-                whileHover={{ scale: 1 }}
-                transition={{ duration: 0.3 }}
-              />
+              <div className="flex items-center gap-2.5">
+                <span 
+                  className={`font-semibold text-[18px] lg:text-[22px] tracking-tight leading-none transition-colors duration-500 ${
+                    scrolled ? 'text-[#1a1a1a]' : 'text-white'
+                  }`}
+                >
+                  Light Vision
+                </span>
+                <span 
+                  className="font-semibold text-[18px] lg:text-[22px] tracking-tight leading-none transition-colors duration-500"
+                  style={{ color: scrolled ? '#0071e3' : '#ffffff' }}
+                >
+                  Marketing
+                </span>
+              </div>
             </motion.div>
-            <span className="font-bold text-xl md:text-2xl text-white hidden sm:block">
-              Light Vision{' '}
-              <span style={{ color: '#D4AF37' }}>Marketing</span>
-            </span>
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-8">
-            {navLinks.map((link) => (
-              link.isLink ? (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="relative text-gray-300 text-sm font-medium uppercase tracking-widest transition-all duration-300 py-2 hover:text-white group"
-                >
-                  {link.label}
-                  <span
-                    className="absolute bottom-0 left-0 w-0 h-0.5 transition-all duration-300 group-hover:w-full"
-                    style={{ backgroundColor: '#D4AF37' }}
-                  />
-                </Link>
-              ) : (
-                <button
-                  key={link.href}
-                  onClick={() => scrollToSection(link.href)}
-                  className="relative text-gray-300 text-sm font-medium uppercase tracking-widest transition-all duration-300 py-2 hover:text-white group"
-                >
-                  {link.label}
-                  <span
-                    className="absolute bottom-0 left-0 w-0 h-0.5 transition-all duration-300 group-hover:w-full"
-                    style={{ backgroundColor: '#D4AF37' }}
-                  />
-                </button>
-              )
-            ))}
+          {/* Spacer */}
+          <div className="flex-1"></div>
 
-            {/* Kontakt Button */}
-            <Link href="/kontakt">
+          {/* Desktop Navigation - Right Side */}
+          <div className="hidden lg:flex items-center gap-8 pr-4">
+            {navLinks.map((link) => (
               <motion.button
-                className="px-6 py-2.5 rounded-full text-sm font-semibold uppercase tracking-wide text-white"
-                style={{ backgroundColor: '#D4AF37' }}
-                whileHover={{
-                  backgroundColor: '#F0C350',
-                  scale: 1.02,
-                }}
-                whileTap={{ scale: 0.98 }}
+                key={link.id}
+                onClick={() => scrollToSection(link.id)}
+                className="relative group"
+                whileHover={{ y: -1 }}
                 transition={{ duration: 0.2 }}
               >
-                Kontakt
+                <span 
+                  className={`text-[15px] font-medium transition-colors duration-500 ${
+                    scrolled 
+                      ? (activeSection === link.id ? 'text-[#1a1a1a]' : 'text-[#505050]')
+                      : (activeSection === link.id ? 'text-white' : 'text-white/80')
+                  }`}
+                >
+                  {link.label}
+                </span>
+                
+                {/* Hover underline */}
+                <motion.div
+                  className={`absolute -bottom-1 left-0 right-0 h-[2px] origin-left ${
+                    scrolled ? 'bg-[#1a1a1a]' : 'bg-white'
+                  }`}
+                  initial={{ scaleX: 0 }}
+                  whileHover={{ scaleX: 1 }}
+                  transition={{ duration: 0.2 }}
+                />
+                
+                {/* Active indicator */}
+                {activeSection === link.id && (
+                  <motion.div
+                    layoutId="activeIndicator"
+                    className={`absolute -bottom-1 left-0 right-0 h-[2px] ${
+                      scrolled ? 'bg-[#0071e3]' : 'bg-white'
+                    }`}
+                    transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                  />
+                )}
               </motion.button>
-            </Link>
+            ))}
           </div>
 
           {/* Mobile Menu Button */}
           <motion.button
-            className="md:hidden p-2 text-white"
+            className={`lg:hidden p-2 -mr-2 relative z-10 transition-colors duration-500 ${
+              scrolled ? 'text-[#1a1a1a]' : 'text-white'
+            }`}
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label="Toggle menu"
             whileTap={{ scale: 0.95 }}
           >
-            {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
+            <AnimatePresence mode="wait">
+              {isMobileMenuOpen ? (
+                <motion.div
+                  key="close"
+                  initial={{ rotate: -90, opacity: 0 }}
+                  animate={{ rotate: 0, opacity: 1 }}
+                  exit={{ rotate: 90, opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <X size={24} strokeWidth={2} />
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="menu"
+                  initial={{ rotate: 90, opacity: 0 }}
+                  animate={{ rotate: 0, opacity: 1 }}
+                  exit={{ rotate: -90, opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <Menu size={24} strokeWidth={2} />
+                </motion.div>
+              )}
+            </AnimatePresence>
           </motion.button>
         </nav>
 
@@ -136,65 +188,37 @@ export default function Header() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3 }}
-              className="md:hidden absolute top-full left-0 right-0 overflow-hidden"
+              transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+              className="lg:hidden overflow-hidden"
               style={{
-                backgroundColor: 'rgba(10, 10, 10, 0.95)',
-                backdropFilter: 'blur(20px)',
-                borderBottom: '1px solid rgba(255, 255, 255, 0.05)'
+                backgroundColor: scrolled ? 'rgba(248, 248, 248, 0.98)' : 'rgba(0, 0, 0, 0.5)',
+                backdropFilter: 'blur(12px)',
+                borderRadius: '12px',
+                marginTop: '12px',
               }}
             >
-              <div className="flex flex-col py-6 px-6">
+              <div className="flex flex-col py-5 gap-1.5 px-3">
                 {navLinks.map((link, index) => (
-                  link.isLink ? (
-                    <motion.div
-                      key={link.href}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                    >
-                      <Link
-                        href={link.href}
-                        className="py-4 text-lg font-medium text-gray-300 transition-colors block"
-                        style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.05)' }}
-                        onClick={() => setIsMobileMenuOpen(false)}
-                      >
-                        {link.label}
-                      </Link>
-                    </motion.div>
-                  ) : (
-                    <motion.div
-                      key={link.href}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                    >
-                      <button
-                        onClick={() => scrollToSection(link.href)}
-                        className="py-4 text-lg font-medium text-gray-300 transition-colors text-left w-full"
-                        style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.05)' }}
-                      >
-                        {link.label}
-                      </button>
-                    </motion.div>
-                  )
+                  <motion.button
+                    key={link.id}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.05, duration: 0.3 }}
+                    onClick={() => scrollToSection(link.id)}
+                    className="w-full text-left px-3 py-3 text-[15px] font-medium rounded-lg transition-all duration-200"
+                    style={{
+                      backgroundColor: activeSection === link.id 
+                        ? (scrolled ? '#f0f0f0' : 'rgba(255, 255, 255, 0.15)')
+                        : 'transparent',
+                      color: scrolled
+                        ? (activeSection === link.id ? '#1a1a1a' : '#505050')
+                        : 'white',
+                    }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    {link.label}
+                  </motion.button>
                 ))}
-
-                {/* Mobile Kontakt Button */}
-                <motion.div
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.2 }}
-                >
-                  <Link href="/kontakt" onClick={() => setIsMobileMenuOpen(false)}>
-                    <button
-                      className="mt-6 w-full px-8 py-4 rounded-full text-base font-semibold uppercase tracking-wide transition-all duration-300 text-white"
-                      style={{ backgroundColor: '#D4AF37' }}
-                    >
-                      Kontakt
-                    </button>
-                  </Link>
-                </motion.div>
               </div>
             </motion.div>
           )}

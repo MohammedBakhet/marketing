@@ -1,116 +1,98 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Sparkles } from 'lucide-react';
 
 const clients = [
-  'El Birria',
-  'Sushi Sukai',
-  'Holy Kebab',
-  'Fratelli',
-  'Blubnan Kajen',
-  'Dirty Taco',
-  'Orimlig Hyra',
-  'Santa Maria',
-  'Intraskin',
-  'Stortorgskällan',
-  'Cafe Fix',
-  'Krubb',
-  'Comviq',
-  'The Boil',
-  'Kista Galleria',
-  'Jureskogs',
-  'Clean SAVD',
-  'McDonalds',
-  'Brams Burgers',
-  'The Border Burgers VS Burrito',
+  { name: 'El Birria', logo: null },
+  { name: 'Sushi Sukai', logo: null },
+  { name: 'Holy Kebab', logo: null },
+  { name: 'Fratelli', logo: null },
+  { name: 'Blubnan Kajen', logo: null },
+  { name: 'Dirty Taco', logo: null },
+  { name: 'Orimlig Hyra', logo: null },
+  { name: 'Santa Maria', logo: null },
+  { name: 'Intraskin', logo: null },
+  { name: 'Stortorgskällan', logo: null },
+  { name: 'Cafe Fix', logo: null },
+  { name: 'Krubb', logo: null },
+  { name: 'Comviq', logo: null },
+  { name: 'The Boil', logo: null },
+  { name: 'Kista Galleria', logo: null },
+  { name: 'Jureskogs', logo: null },
+  { name: 'Clean SAVD', logo: null },
+  { name: 'McDonalds', logo: null },
+  { name: 'Brams Burgers', logo: null },
+  { name: 'The Border', logo: null },
 ];
 
 export default function Clients() {
-  const duplicatedClients = [...clients, ...clients];
+  const duplicatedClients = [...clients, ...clients, ...clients];
 
   return (
-    <section className="py-24 relative overflow-hidden" style={{ backgroundColor: '#0a0a0a' }}>
-      {/* Background decoration */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] rounded-full blur-[200px]" style={{ backgroundColor: 'rgba(212, 175, 55, 0.03)' }} />
-      </div>
+    <section id="kunder" className="py-20 md:py-32 bg-[#0a0a0a] overflow-hidden w-full">
+      {/* Header */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="text-center mb-16 md:mb-24"
+      >
+        <h2 className="text-3xl md:text-5xl font-bold text-white">
+          Kunder vi jobbat med
+        </h2>
+      </motion.div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16 flex flex-col items-center"
-        >
-          <motion.span
-            className="text-sm font-semibold uppercase tracking-widest mb-4 inline-flex items-center justify-center gap-2"
-            style={{ color: '#D4AF37' }}
-          >
-            <Sparkles size={16} />
-            Våra Kunder
-            <Sparkles size={16} />
-          </motion.span>
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white text-center">
-            Företag vi{' '}
-            <span className="bg-gradient-to-r from-[#D4AF37] to-[#F0C350] bg-clip-text text-transparent">
-              samarbetat med
-            </span>
-          </h2>
-          <p className="text-lg text-gray-400 max-w-2xl text-center">
-            Vi är stolta över att ha arbetat med dessa fantastiska varumärken
-          </p>
-        </motion.div>
-
-        {/* Scrolling logos container */}
-        <div className="relative overflow-hidden py-8">
+      {/* Scrolling logos - runda cirklar */}
+      <div className="relative w-full">
           <motion.div
-            className="flex gap-6"
+            className="flex gap-4 md:gap-6"
             animate={{
-              x: [0, -60 * clients.length],
+              x: ['0%', '-33.33%'],
             }}
             transition={{
               x: {
                 repeat: Infinity,
                 repeatType: 'loop',
-                duration: 50,
+                duration: 45,
                 ease: 'linear',
               },
             }}
           >
             {duplicatedClients.map((client, index) => (
               <motion.div
-                key={`${client}-${index}`}
-                className="flex-shrink-0 px-8 py-6 rounded-2xl flex items-center justify-center"
-                style={{
-                  backgroundColor: 'rgba(255, 255, 255, 0.02)',
-                  border: '1px solid rgba(255, 255, 255, 0.06)',
-                  minWidth: '200px'
-                }}
+                key={`${client.name}-${index}`}
+                className="flex-shrink-0 w-32 h-32 md:w-40 md:h-40 rounded-full bg-white/5 backdrop-blur-sm flex items-center justify-center border border-white/10 overflow-hidden"
                 whileHover={{
-                  backgroundColor: 'rgba(255, 255, 255, 0.04)',
-                  borderColor: 'rgba(212, 175, 55, 0.3)',
+                  scale: 1.05,
+                  backgroundColor: 'rgba(255, 255, 255, 0.1)',
                 }}
+                transition={{ duration: 0.2 }}
               >
-                <span className="text-sm font-medium text-gray-400 whitespace-nowrap">
-                  {client}
-                </span>
+                {client.logo ? (
+                  <img
+                    src={client.logo}
+                    alt={client.name}
+                    className="w-full h-full object-contain p-4"
+                  />
+                ) : (
+                  <span className="text-xs md:text-sm font-medium text-white text-center px-4">
+                    {client.name}
+                  </span>
+                )}
               </motion.div>
             ))}
           </motion.div>
 
-          {/* Gradient overlays */}
+          {/* Gradient overlays för smooth fade */}
           <div
-            className="absolute left-0 top-0 bottom-0 w-32 pointer-events-none z-10"
+            className="absolute left-0 top-0 bottom-0 w-20 md:w-32 pointer-events-none z-10"
             style={{ background: 'linear-gradient(to right, #0a0a0a, transparent)' }}
           />
           <div
-            className="absolute right-0 top-0 bottom-0 w-32 pointer-events-none z-10"
+            className="absolute right-0 top-0 bottom-0 w-20 md:w-32 pointer-events-none z-10"
             style={{ background: 'linear-gradient(to left, #0a0a0a, transparent)' }}
           />
-        </div>
       </div>
     </section>
   );
