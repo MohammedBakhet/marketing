@@ -12,9 +12,8 @@ export default function Header() {
 
   useEffect(() => {
     const handleScroll = () => {
-      // Ändra stil när man scrollat förbi videon
-      setScrolled(window.scrollY > 600);
-      
+      setScrolled(window.scrollY > 100);
+
       const sections = ['kunder', 'tjanster', 'om-oss', 'kontakt'];
       const current = sections.find(section => {
         const element = document.getElementById(section);
@@ -37,7 +36,7 @@ export default function Header() {
       const offset = 80;
       const elementPosition = element.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.pageYOffset - offset;
-      
+
       window.scrollTo({
         top: offsetPosition,
         behavior: 'smooth'
@@ -47,9 +46,9 @@ export default function Header() {
   };
 
   const navLinks = [
-    { id: 'kunder', label: 'Kunder' },
     { id: 'tjanster', label: 'Tjänster' },
     { id: 'om-oss', label: 'Om Oss' },
+    { id: 'kunder', label: 'Kunder' },
     { id: 'kontakt', label: 'Kontakt' },
   ];
 
@@ -62,13 +61,13 @@ export default function Header() {
         scrolled ? 'py-4 lg:py-5' : 'py-6 lg:py-8'
       }`}
       style={{
-        backgroundColor: scrolled 
-          ? 'rgba(248, 248, 248, 0.95)' 
+        backgroundColor: scrolled
+          ? 'rgba(15, 15, 15, 0.95)'
           : 'rgba(0, 0, 0, 0.15)',
         backdropFilter: scrolled ? 'blur(12px)' : 'blur(8px)',
         WebkitBackdropFilter: scrolled ? 'blur(12px)' : 'blur(8px)',
-        boxShadow: scrolled 
-          ? '0 2px 12px rgba(0, 0, 0, 0.08)' 
+        boxShadow: scrolled
+          ? '0 1px 0 rgba(255, 255, 255, 0.05)'
           : 'none',
       }}
     >
@@ -82,17 +81,10 @@ export default function Header() {
               transition={{ duration: 0.2 }}
             >
               <div className="flex items-center gap-2.5">
-                <span 
-                  className={`font-semibold text-[18px] lg:text-[22px] tracking-tight leading-none transition-colors duration-500 ${
-                    scrolled ? 'text-[#1a1a1a]' : 'text-white'
-                  }`}
-                >
+                <span className="font-semibold text-[18px] lg:text-[22px] tracking-tight leading-none text-white">
                   Light Vision
                 </span>
-                <span 
-                  className="font-semibold text-[18px] lg:text-[22px] tracking-tight leading-none transition-colors duration-500"
-                  style={{ color: scrolled ? '#0071e3' : '#ffffff' }}
-                >
+                <span className="font-semibold text-[18px] lg:text-[22px] tracking-tight leading-none text-white/70">
                   Marketing
                 </span>
               </div>
@@ -112,33 +104,19 @@ export default function Header() {
                 whileHover={{ y: -1 }}
                 transition={{ duration: 0.2 }}
               >
-                <span 
-                  className={`text-[15px] font-medium transition-colors duration-500 ${
-                    scrolled 
-                      ? (activeSection === link.id ? 'text-[#1a1a1a]' : 'text-[#505050]')
-                      : (activeSection === link.id ? 'text-white' : 'text-white/80')
+                <span
+                  className={`text-[15px] font-medium transition-colors duration-300 ${
+                    activeSection === link.id ? 'text-white' : 'text-white/60 hover:text-white'
                   }`}
                 >
                   {link.label}
                 </span>
-                
-                {/* Hover underline */}
-                <motion.div
-                  className={`absolute -bottom-1 left-0 right-0 h-[2px] origin-left ${
-                    scrolled ? 'bg-[#1a1a1a]' : 'bg-white'
-                  }`}
-                  initial={{ scaleX: 0 }}
-                  whileHover={{ scaleX: 1 }}
-                  transition={{ duration: 0.2 }}
-                />
-                
+
                 {/* Active indicator */}
                 {activeSection === link.id && (
                   <motion.div
                     layoutId="activeIndicator"
-                    className={`absolute -bottom-1 left-0 right-0 h-[2px] ${
-                      scrolled ? 'bg-[#0071e3]' : 'bg-white'
-                    }`}
+                    className="absolute -bottom-1 left-0 right-0 h-[2px] bg-white"
                     transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                   />
                 )}
@@ -148,9 +126,7 @@ export default function Header() {
 
           {/* Mobile Menu Button */}
           <motion.button
-            className={`lg:hidden p-2 -mr-2 relative z-10 transition-colors duration-500 ${
-              scrolled ? 'text-[#1a1a1a]' : 'text-white'
-            }`}
+            className="lg:hidden p-2 -mr-2 relative z-10 text-white"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label="Toggle menu"
             whileTap={{ scale: 0.95 }}
@@ -191,10 +167,11 @@ export default function Header() {
               transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
               className="lg:hidden overflow-hidden"
               style={{
-                backgroundColor: scrolled ? 'rgba(248, 248, 248, 0.98)' : 'rgba(0, 0, 0, 0.5)',
+                backgroundColor: 'rgba(15, 15, 15, 0.98)',
                 backdropFilter: 'blur(12px)',
                 borderRadius: '12px',
                 marginTop: '12px',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
               }}
             >
               <div className="flex flex-col py-5 gap-1.5 px-3">
@@ -207,12 +184,10 @@ export default function Header() {
                     onClick={() => scrollToSection(link.id)}
                     className="w-full text-left px-3 py-3 text-[15px] font-medium rounded-lg transition-all duration-200"
                     style={{
-                      backgroundColor: activeSection === link.id 
-                        ? (scrolled ? '#f0f0f0' : 'rgba(255, 255, 255, 0.15)')
+                      backgroundColor: activeSection === link.id
+                        ? 'rgba(255, 255, 255, 0.1)'
                         : 'transparent',
-                      color: scrolled
-                        ? (activeSection === link.id ? '#1a1a1a' : '#505050')
-                        : 'white',
+                      color: activeSection === link.id ? 'white' : 'rgba(255, 255, 255, 0.6)',
                     }}
                     whileTap={{ scale: 0.98 }}
                   >

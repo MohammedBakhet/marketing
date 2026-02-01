@@ -1,12 +1,13 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import Link from 'next/link';
 
 export default function Hero() {
-  const scrollToNext = () => {
-    const clientsSection = document.getElementById('kunder');
-    if (clientsSection) {
-      clientsSection.scrollIntoView({ behavior: 'smooth' });
+  const scrollToContact = () => {
+    const contactSection = document.getElementById('kontakt');
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
@@ -23,9 +24,9 @@ export default function Hero() {
         >
           <source src="/movie.mp4" type="video/mp4" />
         </video>
-        
+
         {/* Overlay för bättre läsbarhet */}
-        <div className="absolute inset-0 bg-black/40" />
+        <div className="absolute inset-0 bg-black/50" />
       </div>
 
       {/* Content overlay */}
@@ -37,27 +38,82 @@ export default function Hero() {
           className="text-center w-full max-w-4xl"
         >
           {/* Main heading */}
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-4 leading-tight">
+          <motion.h1
+            className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.5 }}
+          >
             Marknadsföring som skapar{' '}
-            <span className="text-white">genomslag</span>
-          </h1>
+            <span className="relative">
+              genomslag
+              <motion.span
+                className="absolute bottom-0 left-0 w-full h-1 bg-white"
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: 1 }}
+                transition={{ duration: 0.8, delay: 1.2 }}
+              />
+            </span>
+          </motion.h1>
 
           {/* Subheading */}
-          <p className="text-lg md:text-2xl text-white/90 mb-12">
-            Vi får varumärken att synas, kännas och växa
-          </p>
-
-          {/* CTA Button */}
-          <motion.button
-            onClick={scrollToNext}
-            className="inline-flex items-center gap-2 px-8 py-4 text-base md:text-lg font-medium text-white bg-white/10 backdrop-blur-sm border border-white/20 rounded-full hover:bg-white/20 transition-all duration-300"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+          <motion.p
+            className="text-lg md:text-2xl text-white/80 mb-12"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.8 }}
           >
-            Läs mer
-          </motion.button>
+            Vi får varumärken att synas, kännas och växa
+          </motion.p>
+
+          {/* CTA Buttons */}
+          <motion.div
+            className="flex flex-col sm:flex-row items-center justify-center gap-4"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 1 }}
+          >
+            <motion.button
+              onClick={scrollToContact}
+              className="px-8 py-4 text-base md:text-lg font-medium text-black bg-white rounded-full hover:bg-gray-100 transition-all duration-300"
+              whileHover={{ scale: 1.05, boxShadow: '0 10px 40px rgba(255,255,255,0.2)' }}
+              whileTap={{ scale: 0.95 }}
+            >
+              Kontakta oss
+            </motion.button>
+
+            <Link href="#tjanster">
+              <motion.span
+                className="px-8 py-4 text-base md:text-lg font-medium text-white border border-white/30 rounded-full hover:bg-white/10 transition-all duration-300 inline-block"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Våra tjänster
+              </motion.span>
+            </Link>
+          </motion.div>
         </motion.div>
       </div>
+
+      {/* Scroll indicator */}
+      <motion.div
+        className="absolute bottom-8 left-1/2 -translate-x-1/2"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.5 }}
+      >
+        <motion.div
+          className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center"
+          animate={{ y: [0, 5, 0] }}
+          transition={{ duration: 2, repeat: Infinity }}
+        >
+          <motion.div
+            className="w-1.5 h-3 bg-white/60 rounded-full mt-2"
+            animate={{ opacity: [1, 0.3, 1] }}
+            transition={{ duration: 2, repeat: Infinity }}
+          />
+        </motion.div>
+      </motion.div>
     </section>
   );
 }

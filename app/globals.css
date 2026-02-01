@@ -1,15 +1,15 @@
 @import "tailwindcss";
 
 :root {
-  /* Apple-inspired minimalist color palette */
-  --background: #ffffff;
-  --foreground: #1d1d1f;
-  --secondary: #6e6e73;
-  --accent: #0071e3;
-  --accent-hover: #0077ed;
-  --border: #d2d2d7;
-  --surface: #f5f5f7;
-  
+  /* Dark modern color palette */
+  --background: #0f0f0f;
+  --foreground: #ffffff;
+  --secondary: #a0a0a0;
+  --accent: #ffffff;
+  --accent-hover: #e0e0e0;
+  --border: #2a2a2a;
+  --surface: #1a1a1a;
+
   /* Typography */
   --font-size-xs: 0.75rem;
   --font-size-sm: 0.875rem;
@@ -21,11 +21,11 @@
   --font-size-4xl: 2.25rem;
   --font-size-5xl: 3rem;
   --font-size-6xl: 3.75rem;
-  
+
   /* Spacing */
   --spacing-section: 5rem;
   --spacing-section-mobile: 3rem;
-  
+
   /* Transitions */
   --transition-smooth: cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -122,8 +122,8 @@ section {
   padding: 0.875rem 1.75rem;
   font-size: 1rem;
   font-weight: 500;
-  color: white;
-  background: var(--accent);
+  color: #0f0f0f;
+  background: #ffffff;
   border: none;
   border-radius: 0.5rem;
   cursor: pointer;
@@ -132,9 +132,31 @@ section {
 }
 
 .btn-primary:hover {
-  background: var(--accent-hover);
+  background: #e0e0e0;
   transform: translateY(-1px);
-  box-shadow: 0 10px 30px rgba(0, 113, 227, 0.25);
+  box-shadow: 0 10px 30px rgba(255, 255, 255, 0.15);
+}
+
+/* Secondary button */
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.875rem 1.75rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #ffffff;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s var(--transition-smooth);
+  text-decoration: none;
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.5);
 }
 
 /* Smooth animations */
@@ -171,23 +193,29 @@ section {
   }
 }
 
-/* Scrollbar styling (Apple-like) */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* Scrollbar styling */
 ::-webkit-scrollbar {
-  width: 12px;
+  width: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: #0f0f0f;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: 6px;
-  border: 3px solid transparent;
-  background-clip: content-box;
+  background: #333;
+  border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.3);
-  background-clip: content-box;
+  background: #444;
 }

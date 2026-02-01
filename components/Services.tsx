@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import Image from 'next/image';
+import { useState } from 'react';
 
 const services = [
   {
@@ -42,12 +42,67 @@ const services = [
   },
 ];
 
+function ServiceCard({ service, index }: { service: typeof services[0]; index: number }) {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-100px' }}
+      transition={{ duration: 0.6, delay: index * 0.1 }}
+      className="group"
+    >
+      {/* Image */}
+      <div className="relative w-full aspect-[3/2] rounded-xl overflow-hidden mb-4 bg-[#1a1a1a]">
+        <img
+          src={service.image}
+          alt={service.title}
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          loading="lazy"
+        />
+        <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-all duration-300" />
+      </div>
+
+      {/* Content */}
+      <div>
+        <h3 className="text-lg md:text-xl font-semibold text-white mb-3">
+          {service.title}
+        </h3>
+
+        {isExpanded && (
+          <motion.p
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="text-gray-400 leading-relaxed text-sm mb-3"
+          >
+            {service.description}
+          </motion.p>
+        )}
+
+        <button
+          onClick={() => setIsExpanded(!isExpanded)}
+          className="text-sm font-medium text-white/70 hover:text-white transition-colors underline underline-offset-4"
+        >
+          {isExpanded ? 'Stäng' : 'Läs mer'}
+        </button>
+      </div>
+    </motion.div>
+  );
+}
+
 export default function Services() {
   return (
-    <section id="tjanster" className="pt-24 pb-20 md:pt-40 md:pb-32 relative overflow-hidden w-full">
-      {/* Gradient background från mörk till ljus */}
-      <div className="absolute inset-0 -top-1 bg-gradient-to-b from-[#0a0a0a] via-[#2a2a2a] via-40% to-white" />
-      
+    <section id="tjanster" className="py-20 md:py-32 bg-[#0f0f0f] relative overflow-hidden w-full">
+      {/* Subtle background pattern */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute inset-0" style={{
+          backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)',
+          backgroundSize: '40px 40px'
+        }} />
+      </div>
+
       <div className="w-full container-padding relative z-10">
         {/* Header */}
         <motion.div
@@ -55,46 +110,26 @@ export default function Services() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-20 md:mb-28"
+          className="text-center mb-16 md:mb-20"
         >
+          <motion.span
+            className="inline-block px-4 py-2 text-sm font-medium text-white/60 border border-white/10 rounded-full mb-6"
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+          >
+            Vad vi gör
+          </motion.span>
           <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">Tjänster</h2>
-          <p className="text-lg md:text-xl text-white/80">
+          <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto">
             Vi levererar helhetslösningar som driver resultat
           </p>
         </motion.div>
 
         {/* Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
           {services.map((service, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-100px' }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="group"
-            >
-              {/* Image */}
-              <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden mb-6 bg-surface">
-                <img
-                  src={service.image}
-                  alt={service.title}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  loading="lazy"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              </div>
-
-              {/* Content */}
-              <div>
-                <h3 className="heading-3 text-xl md:text-2xl mb-4">
-                  {service.title}
-                </h3>
-                <p className="text-secondary leading-relaxed">
-                  {service.description}
-                </p>
-              </div>
-            </motion.div>
+            <ServiceCard key={index} service={service} index={index} />
           ))}
         </div>
       </div>

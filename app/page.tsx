@@ -8,15 +8,15 @@ import Footer from '@/components/Footer';
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[#0f0f0f]">
       <Header />
       <main>
         <Hero />
-        <Clients />
         <Services />
         <About />
         <CTASection />
       </main>
+      <Clients />
       <Footer />
     </div>
   );
