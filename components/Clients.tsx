@@ -38,14 +38,14 @@ export default function Clients() {
         transition={{ duration: 0.6 }}
         className="text-center mb-16 md:mb-20 container-padding"
       >
-        <motion.span
+        {/* <motion.span
           className="inline-block px-4 py-2 text-sm font-medium text-white/60 border border-white/10 rounded-full mb-6"
           initial={{ opacity: 0, scale: 0.9 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
         >
           Vårt nätverk
-        </motion.span>
+        </motion.span> */}
         <h2 className="text-3xl md:text-5xl font-bold text-white">
           Kunder vi jobbat med
         </h2>

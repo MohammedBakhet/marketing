@@ -199,8 +199,14 @@ export default function ContactForm() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full btn-primary text-base md:text-lg py-4 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="group relative w-full overflow-hidden rounded-xl px-8 py-5 text-base md:text-lg font-semibold text-black shadow-lg transition-all duration-300 hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+              style={{
+                background: 'linear-gradient(90deg,rgb(80, 77, 77),rgb(255, 255, 255))',
+              }}
             >
+              {/* Shimmer effect */}
+              <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+              
               <AnimatePresence mode="wait">
                 {isLoading ? (
                   <motion.span
@@ -208,7 +214,7 @@ export default function ContactForm() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="flex items-center justify-center gap-3"
+                    className="relative z-10 flex items-center justify-center gap-3"
                   >
                     <motion.div
                       className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full"
@@ -223,10 +229,10 @@ export default function ContactForm() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="flex items-center justify-center gap-3"
+                    className="relative z-10 flex items-center justify-center gap-3"
                   >
                     Skicka meddelande
-                    <Send size={20} />
+                    <Send size={20} className="transition-transform duration-300 group-hover:translate-x-0.5" />
                   </motion.span>
                 )}
               </AnimatePresence>
