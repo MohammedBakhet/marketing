@@ -169,11 +169,14 @@ export default function Home() {
         {/* Quote divider between Clients and CTA */}
         <QuoteDivider />
         
+        {/* Thin line above CTA */}
+        <div className="w-full flex justify-center bg-[#050505]">
+          <div className="w-3/4 max-w-5xl h-px bg-white/10" />
+        </div>
+
         {/* CTA Section */}
         <CTASection />
         
-        {/* Gold divider before Footer */}
-        <SectionDivider variant="gold" />
       </main>
       <Footer />
     </div>

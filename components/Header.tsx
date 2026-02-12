@@ -16,9 +16,9 @@ const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const navLinks = [
-    { href: '#om-oss', label: 'Om Oss' },
+  const navLinks = [ 
     { href: '#tjanster', label: 'Tjänster' },
+    { href: '#om-oss', label: 'Om Oss' },
     { href: '#kontakt', label: 'Kontakt' },
   ];
 
