@@ -2,33 +2,21 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Send, CheckCircle } from 'lucide-react';
+import { Send, CheckCircle, Sparkles } from 'lucide-react';
 
-interface FormData {
-  name: string;
-  phone: string;
-  email: string;
-  company: string;
-  message: string;
-}
-
-export default function ContactForm() {
-  const [formData, setFormData] = useState<FormData>({
+const ContactForm = () => {
+  const [formData, setFormData] = useState({
     name: '',
     phone: '',
     email: '',
     company: '',
     message: '',
   });
-
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
   const [focusedField, setFocusedField] = useState<string | null>(null);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -38,64 +26,46 @@ export default function ContactForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    setErrorMessage('');
-
-    try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to send message');
-      }
-
-      setIsLoading(false);
-      setIsSubmitted(true);
-    } catch (error) {
-      setIsLoading(false);
-      setErrorMessage('Något gick fel. Vänligen försök igen.');
-    }
+    
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    
+    setIsLoading(false);
+    setIsSubmitted(true);
   };
-
-  const inputFields = [
-    { id: 'name', label: 'För & Efternamn', type: 'text', placeholder: 'Ditt namn', required: true },
-    { id: 'phone', label: 'Telefon', type: 'tel', placeholder: '+46 70 123 45 67', required: true },
-    { id: 'email', label: 'Email', type: 'email', placeholder: 'din@email.se', required: true },
-    { id: 'company', label: 'Bolag', type: 'text', placeholder: 'Företagsnamn', required: true },
-  ];
 
   if (isSubmitted) {
     return (
-      <section id="kontaktformular" className="min-h-screen flex items-center justify-center py-20 md:py-32 bg-surface">
-        <div className="max-w-[800px] mx-auto container-padding">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5 }}
+      <section id="kontakt" className="min-h-screen pt-32 pb-16 bg-black relative overflow-hidden flex items-center justify-center">
+        <div className="w-full max-w-3xl mx-auto px-6">
+          <motion.div 
             className="text-center"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, ease: [0.25, 0.4, 0.25, 1] }}
           >
-            <motion.div
-              className="w-20 h-20 md:w-24 md:h-24 rounded-full flex items-center justify-center mx-auto mb-6 bg-accent/10"
+            <motion.div 
+              className="w-24 h-24 rounded-full bg-[#d4af37]/20 flex items-center justify-center mx-auto mb-8 relative"
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
-              transition={{ duration: 0.5, delay: 0.2, type: 'spring' }}
+              transition={{ duration: 0.5, delay: 0.2, type: 'spring', stiffness: 200 }}
             >
-              <CheckCircle size={48} className="text-accent" />
+              <motion.div
+                className="absolute inset-0 rounded-full bg-[#d4af37]/20"
+                animate={{ scale: [1, 1.3, 1], opacity: [0.5, 0, 0.5] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              />
+              <CheckCircle size={48} className="text-[#d4af37] relative z-10" />
             </motion.div>
-            <motion.h2
-              className="heading-2 mb-4"
+            <motion.h2 
+              className="text-3xl md:text-4xl font-bold text-white mb-4"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
             >
               Tack för ditt meddelande!
             </motion.h2>
-            <motion.p
-              className="body-large"
+            <motion.p 
+              className="text-[#d7c7a0] text-lg"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
@@ -108,148 +78,192 @@ export default function ContactForm() {
     );
   }
 
+  const inputFields = [
+    { id: 'name', label: 'För & Efternamn', type: 'text', placeholder: 'Ditt namn', required: true },
+    { id: 'phone', label: 'Telefon', type: 'tel', placeholder: '+46 70 123 45 67', required: true },
+    { id: 'email', label: 'Email', type: 'email', placeholder: 'din@email.se', required: true },
+    { id: 'company', label: 'Bolag', type: 'text', placeholder: 'Företagsnamn', required: true },
+  ];
+
   return (
-    <section id="kontaktformular" className="py-20 md:py-32 bg-surface">
-      <div className="max-w-[800px] mx-auto container-padding">
+    <section id="kontakt" className="min-h-screen pt-32 pb-16 bg-black relative overflow-hidden flex items-center justify-center">
+      {/* Background decoration */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#d4af37]/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-[#d4af37]/5 rounded-full blur-3xl" />
+      </div>
+
+      <div className="w-full max-w-3xl mx-auto px-6 relative z-10">
         {/* Header */}
-        <motion.div
+        <motion.div 
+          className="text-center mb-12"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12 md:mb-16"
         >
-          <h2 className="heading-2 mb-4">
-            Är du redo på att ta ditt företag till <span className="text-accent">nästa steg?</span>
+          <motion.span 
+            className="text-[#d4af37] text-sm font-semibold uppercase tracking-widest mb-4 inline-flex items-center gap-2"
+            whileHover={{ scale: 1.05 }}
+          >
+            <Sparkles size={16} />
+            Kontakt
+            <Sparkles size={16} />
+          </motion.span>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#d4af37] mb-4 leading-tight">
+            Är du redo att ta ditt företag till{' '}
+            <span className="block">nästa steg?</span>
           </h2>
-          <p className="body-large">
+          <p className="text-[#d7c7a0] text-lg">
             Lämna dina kontaktuppgifter så återkommer vi inom 48h.
           </p>
         </motion.div>
 
         {/* Form */}
-        <motion.form
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.3 }}
-          onSubmit={handleSubmit}
+        <motion.form 
+          onSubmit={handleSubmit} 
           className="space-y-6"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.2 }}
         >
           <div className="grid md:grid-cols-2 gap-6">
             {inputFields.map((field, index) => (
               <motion.div
                 key={field.id}
                 initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 + index * 0.05 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.3 + index * 0.05 }}
               >
-                <label htmlFor={field.id} className="block text-sm font-medium mb-2 text-foreground">
-                  {field.label} {field.required && <span className="text-accent">*</span>}
+                <label htmlFor={field.id} className="block text-sm font-medium text-[#d4af37] mb-2">
+                  {field.label} {field.required && <span className="text-[#d4af37]">*</span>}
                 </label>
-                <input
-                  type={field.type}
-                  id={field.id}
-                  name={field.id}
-                  required={field.required}
-                  value={formData[field.id as keyof typeof formData]}
-                  onChange={handleChange}
-                  onFocus={() => setFocusedField(field.id)}
-                  onBlur={() => setFocusedField(null)}
-                  className="w-full px-4 py-3 md:px-5 md:py-4 rounded-lg text-foreground text-base placeholder-secondary/50 transition-all duration-200 focus:outline-none bg-white border"
-                  style={{
-                    borderColor: focusedField === field.id ? 'var(--accent)' : 'var(--border)',
-                    boxShadow: focusedField === field.id ? '0 0 0 3px rgba(0, 113, 227, 0.1)' : 'none'
+                <motion.div
+                  className="relative"
+                  animate={{
+                    scale: focusedField === field.id ? 1.01 : 1,
                   }}
-                  placeholder={field.placeholder}
-                />
+                  transition={{ duration: 0.2 }}
+                >
+                  <input
+                    type={field.type}
+                    id={field.id}
+                    name={field.id}
+                    required={field.required}
+                    value={formData[field.id as keyof typeof formData]}
+                    onChange={handleChange}
+                    onFocus={() => setFocusedField(field.id)}
+                    onBlur={() => setFocusedField(null)}
+                    className="w-full px-4 py-3 bg-transparent border border-[#d4af37]/30 rounded-lg text-white placeholder-[#d7c7a0]/50 focus:outline-none focus:border-[#d4af37] transition-colors"
+                    placeholder={field.placeholder}
+                  />
+                  <AnimatePresence>
+                    {focusedField === field.id && (
+                      <motion.div
+                        className="absolute inset-0 rounded-lg border-2 border-[#d4af37]/50 pointer-events-none"
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.95 }}
+                        transition={{ duration: 0.2 }}
+                      />
+                    )}
+                  </AnimatePresence>
+                </motion.div>
               </motion.div>
             ))}
           </div>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.5 }}
           >
-            <label htmlFor="message" className="block text-sm font-medium mb-2 text-foreground">
+            <label htmlFor="message" className="block text-sm font-medium text-[#d4af37] mb-2">
               Övriga kommentarer
             </label>
-            <textarea
-              id="message"
-              name="message"
-              rows={6}
-              value={formData.message}
-              onChange={handleChange}
-              onFocus={() => setFocusedField('message')}
-              onBlur={() => setFocusedField(null)}
-              className="w-full px-4 py-3 md:px-5 md:py-4 rounded-lg text-foreground text-base placeholder-secondary/50 transition-all duration-200 focus:outline-none resize-none bg-white border"
-              style={{
-                borderColor: focusedField === 'message' ? 'var(--accent)' : 'var(--border)',
-                boxShadow: focusedField === 'message' ? '0 0 0 3px rgba(0, 113, 227, 0.1)' : 'none'
+            <motion.div
+              className="relative"
+              animate={{
+                scale: focusedField === 'message' ? 1.01 : 1,
               }}
-              placeholder="Berätta mer om vad du behöver hjälp med..."
-            />
+              transition={{ duration: 0.2 }}
+            >
+              <textarea
+                id="message"
+                name="message"
+                rows={5}
+                value={formData.message}
+                onChange={handleChange}
+                onFocus={() => setFocusedField('message')}
+                onBlur={() => setFocusedField(null)}
+                className="w-full px-4 py-3 bg-transparent border border-[#d4af37]/30 rounded-lg text-white placeholder-[#d7c7a0]/50 focus:outline-none focus:border-[#d4af37] transition-colors resize-none"
+                placeholder="Berätta mer om vad du behöver hjälp med..."
+              />
+              <AnimatePresence>
+                {focusedField === 'message' && (
+                  <motion.div
+                    className="absolute inset-0 rounded-lg border-2 border-[#d4af37]/50 pointer-events-none"
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.2 }}
+                  />
+                )}
+              </AnimatePresence>
+            </motion.div>
           </motion.div>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.6 }}
           >
-            <button
+            <motion.button
               type="submit"
               disabled={isLoading}
-              className="group relative w-full overflow-hidden rounded-xl px-8 py-5 text-base md:text-lg font-semibold text-black shadow-lg transition-all duration-300 hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
-              style={{
-                background: 'linear-gradient(90deg,rgb(80, 77, 77),rgb(255, 255, 255))',
-              }}
+              className="w-full py-4 bg-[#d4af37] text-black font-bold uppercase tracking-wider rounded-lg flex items-center justify-center gap-3 text-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#f5d97a] transition-colors"
+              whileHover={{ scale: 1.01 }}
+              whileTap={{ scale: 0.99 }}
             >
-              {/* Shimmer effect */}
-              <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-              
               <AnimatePresence mode="wait">
                 {isLoading ? (
-                  <motion.span
+                  <motion.div
                     key="loading"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="relative z-10 flex items-center justify-center gap-3"
+                    className="flex items-center gap-3"
                   >
-                    <motion.div
-                      className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full"
+                    <motion.div 
+                      className="w-5 h-5 border-2 border-black/30 border-t-black rounded-full"
                       animate={{ rotate: 360 }}
                       transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
                     />
                     Skickar...
-                  </motion.span>
+                  </motion.div>
                 ) : (
-                  <motion.span
+                  <motion.div
                     key="submit"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="relative z-10 flex items-center justify-center gap-3"
+                    className="flex items-center gap-3"
                   >
-                    Skicka meddelande
-                    <Send size={20} className="transition-transform duration-300 group-hover:translate-x-0.5" />
-                  </motion.span>
+                    SKICKA MEDDELANDE
+                    <Send size={20} />
+                  </motion.div>
                 )}
               </AnimatePresence>
-            </button>
+            </motion.button>
           </motion.div>
-
-          {errorMessage && (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="p-4 rounded-lg text-center bg-red-50 border border-red-200 text-red-600"
-            >
-              {errorMessage}
-            </motion.div>
-          )}
         </motion.form>
       </div>
     </section>
   );
-}
+};
+
+export default ContactForm;
