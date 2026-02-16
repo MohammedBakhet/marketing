@@ -1,8 +1,10 @@
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
 
-// Initialize Resend with API key from environment variable
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Initialize Resend only if API key is present.
+// This prevents build/deploy from failing when the key is missing.
+const resendApiKey = process.env.RESEND_API_KEY;
+const resend = resendApiKey ? new Resend(resendApiKey) : null;
 
 export async function POST(request: Request) {
   try {
@@ -14,6 +16,15 @@ export async function POST(request: Request) {
       return NextResponse.json(
         { error: 'All required fields must be filled' },
         { status: 400 }
+      );
+    }
+
+    // If email service is not configured, just accept the form
+    if (!resend) {
+      console.warn('RESEND_API_KEY is not set. Skipping email send.');
+      return NextResponse.json(
+        { success: true, message: 'Form received (email sending disabled in this environment).' },
+        { status: 200 }
       );
     }
 
